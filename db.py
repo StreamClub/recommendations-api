@@ -15,7 +15,7 @@ class MovieDb:
     print("Cursor")
 
   def get_movie_movie_recommendation(self, id):
-    query = f"SELECT recommendations FROM movie_movie_recommendation WHERE Id = {id}"
+    query = f"SELECT recommendations FROM movie_movie_recommendation WHERE Id = {id}" #TO DO: fix sql injection
     self.cur.execute(query)
     if (self.cur.rowcount == 0):
       return "[]"

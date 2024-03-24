@@ -13,3 +13,8 @@ Finalmente, para instalar las dependecias deben hacer esto:
 pip install -r requirements.txt
 ```
 Lo unico que tienen que hacer siempre es activar el env.
+
+Para ejecutar:
+```
+docker-compose up --build
+```
