@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  rapi:
+    container_name: rapi
+    restart: unless-stopped
+    build: .
+    ports:
+      - "${PORT}:5000"
+    volumes:
+      - ${VOLUME_DIR}:/app
