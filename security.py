@@ -6,8 +6,6 @@ import os
 load_dotenv()
 SECRET = os.getenv('SECRET')
 
-print(SECRET)
-
 def require_secret(view_func):
     @wraps(view_func)
     def decorated_function(*args, **kwargs):

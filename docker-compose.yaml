@@ -1,9 +1,11 @@
-version: '3.8'
+version: '3'
 
 services:
-  web:
+  rapi:
+    container_name: rapi
+    restart: unless-stopped
     build: .
     ports:
       - "${PORT}:5000"
     volumes:
-      - .:/app
+      - ${VOLUME_DIR}:/app
