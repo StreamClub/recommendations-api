@@ -17,5 +17,5 @@ def get_movie_recommendation(id):
     return jsonify({'error': 'Invalid ID: ID must be a positive integer.'}), 400
   return [{"id": rec} for rec in recs]
 
-if __name__ == "__main__":
-  app.run(host="0.0.0.0", port=int("5000")) 
+""" if __name__ == "__main__":
+  app.run(host="0.0.0.0", port=int("5000"))  """
