@@ -19,25 +19,25 @@ from sqlalchemy import Column, Integer, String, TIMESTAMP, Boolean, text
 from dotenv import load_dotenv
 import os
 
-# load_dotenv()
-# connection_string = 'postgresql://rdb_o9aw_user:H890f3HiFFqKZI8uaoIgejtvgzbw7RIV@dpg-co4qp3f79t8c73963850-a.oregon-postgres.render.com/rdb_o9aw?sslmode=require'
-# PORT = os.getenv('PORT')
+load_dotenv()
+connection_string = 'postgresql://rdb_o9aw_user:H890f3HiFFqKZI8uaoIgejtvgzbw7RIV@dpg-co4qp3f79t8c73963850-a.oregon-postgres.render.com/rdb_o9aw?sslmode=require'
+PORT = os.getenv('PORT')
 
-# engine = create_engine(connection_string)
+engine = create_engine(connection_string)
 
-# Base = declarative_base()
+Base = declarative_base()
 
-# class MMR(Base):
-#     __tablename__ = "movie_movie_recommendation"
+class MMR(Base):
+    __tablename__ = "movie_movie_recommendation"
 
-#     id = Column(Integer,primary_key=True,nullable=False)
-#     recommendations = Column(String,nullable=False)
+    id = Column(Integer,primary_key=True,nullable=False)
+    recommendations = Column(String,nullable=False)
 
-#     def __str__(self):
-#         return f"Recommendations for movie with id {self.id}: {self.recommendations}"
+    def __str__(self):
+        return f"Recommendations for movie with id {self.id}: {self.recommendations}"
 
-# SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-# session = SessionLocal()
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+session = SessionLocal()
 
 app = FastAPI()
 
@@ -45,14 +45,14 @@ app = FastAPI()
 async def home():
   return "Hello from rootxcs"
 
-# @app.get('/recommendations/movie/{id}')
-# # @require_secret
-# async def get_movie_recommendation(id:int):
+@app.get('/recommendations/movie/{id}')
+# @require_secret
+async def get_movie_recommendation(id:int):
   
-#   result = session.query(MMR).filter(MMR.id == id).first()
-#   if result is None:
-#     raise HTTPException(status_code=404, detail="Item not foundd")
-#   return result.recommendations
+  result = session.query(MMR).filter(MMR.id == id).first()
+  if result is None:
+    raise HTTPException(status_code=404, detail="Item not foundd")
+  return result.recommendations
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=8003)
+    uvicorn.run(app)
