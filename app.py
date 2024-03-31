@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 import uvicorn
+import asyncio
 import sys
 # from security import require_secret
 from db import InvalidIdError, MovieDb
@@ -19,7 +20,7 @@ from dotenv import load_dotenv
 import os
 
 load_dotenv()
-connection_string = os.getenv('DATABASE_URL')
+connection_string = 'postgresql://rdb_o9aw_user:H890f3HiFFqKZI8uaoIgejtvgzbw7RIV@dpg-co4qp3f79t8c73963850-a.oregon-postgres.render.com/rdb_o9aw?sslmode=require'
 PORT = os.getenv('PORT')
 
 engine = create_engine(connection_string)
@@ -42,7 +43,7 @@ app = FastAPI()
 
 @app.get('/')
 async def home():
-  return "Hello from root"
+  return "Hello from rootxc"
 
 @app.get('/recommendations/movie/{id}')
 # @require_secret
@@ -50,8 +51,8 @@ async def get_movie_recommendation(id:int):
   
   result = session.query(MMR).filter(MMR.id == id).first()
   if result is None:
-    raise HTTPException(status_code=404, detail="Item not found")
+    raise HTTPException(status_code=404, detail="Item not foundd")
   return result.recommendations
- 
+
 if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=int("8003"))
+    uvicorn.run(app, host="127.0.0.1", port=8003)
