@@ -1,64 +1,27 @@
-from fastapi import FastAPI, Depends
+from fastapi import APIRouter, FastAPI, Depends
 import uvicorn
-import asyncio
-import sys
-# from security import require_secret
-# from db import InvalidIdError, MovieDb
+from security import SecretException, invalid_secret_exception_handler, verify_token
 from sqlalchemy.orm import Session
-
 from fastapi import HTTPException, Depends
-from starlette import status
-
-from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-
-
-from sqlalchemy import Column, Integer, String, TIMESTAMP, Boolean, text
-
-from dotenv import load_dotenv
-import os
-
-load_dotenv()
-
-connection_string = os.getenv('DATABASE_URL')
-
-engine = create_engine(connection_string)
-
-Base = declarative_base()
-
-class MMR(Base):
-    __tablename__ = "movie_movie_recommendation"
-
-    id = Column(Integer,primary_key=True,nullable=False)
-    recommendations = Column(String,nullable=False)
-
-    def __str__(self):
-        return f"Recommendations for movie with id {self.id}: {self.recommendations}"
-
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
-# Define una función para obtener la sesión de base de datos
-def get_db():
-  db = SessionLocal()
-  try:
-      yield db
-  finally:
-      db.close()
+from db import MMR, get_db
 
 app = FastAPI()
+authenticated = APIRouter(dependencies=[Depends(verify_token)])
 
-@app.get('/')
+@authenticated.get('/health', status_code=200)
 async def home():
-  return "Hello from rootxcs"
+  return "Alive"
 
-@app.get('/recommendations/movie/{id}')
-# @require_secret
+@authenticated.get('/recommendations/movie/{id}', status_code=200)
 async def get_movie_recommendation(id:int, db: Session = Depends(get_db)):
     result = db.query(MMR).filter(MMR.id == id).first()
     if result is None:
         raise HTTPException(status_code=404, detail="Item not found")
     return result.recommendations
+
+# Esta linea debe estar después de todos los métodos:
+app.include_router(authenticated)
+app.add_exception_handler(SecretException, invalid_secret_exception_handler)
 
 if __name__ == "__main__":
     uvicorn.run(app)
