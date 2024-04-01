@@ -1,9 +1,9 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 import uvicorn
 import asyncio
 import sys
 # from security import require_secret
-from db import InvalidIdError, MovieDb
+# from db import InvalidIdError, MovieDb
 from sqlalchemy.orm import Session
 
 from fastapi import HTTPException, Depends
@@ -37,7 +37,14 @@ class MMR(Base):
         return f"Recommendations for movie with id {self.id}: {self.recommendations}"
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-session = SessionLocal()
+
+# Define una función para obtener la sesión de base de datos
+def get_db():
+  db = SessionLocal()
+  try:
+      yield db
+  finally:
+      db.close()
 
 app = FastAPI()
 
@@ -47,12 +54,11 @@ async def home():
 
 @app.get('/recommendations/movie/{id}')
 # @require_secret
-async def get_movie_recommendation(id:int):
-  
-  result = session.query(MMR).filter(MMR.id == id).first()
-  if result is None:
-    raise HTTPException(status_code=404, detail="Item not foundd")
-  return result.recommendations
+async def get_movie_recommendation(id:int, db: Session = Depends(get_db)):
+    result = db.query(MMR).filter(MMR.id == id).first()
+    if result is None:
+        raise HTTPException(status_code=404, detail="Item not found")
+    return result.recommendations
 
 if __name__ == "__main__":
     uvicorn.run(app)
