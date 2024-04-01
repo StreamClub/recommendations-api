@@ -1,5 +1,11 @@
 # Recommendation-api
 
+Para ejecutar usando docker:
+```
+docker-compose up --build
+```
+
+Para ejecutar directamente con python:
 Lo primero que tienen que hacer es crear el environment:
 ```
 python3 -m venv ./myenv
@@ -14,7 +20,7 @@ pip install -r requirements.txt
 ```
 Lo unico que tienen que hacer siempre es activar el env.
 
-Para ejecutar:
+Luego se ejecuta con:
 ```
-docker-compose up --build
+uvicorn app:app --host 127.0.0.1 --port $PORT (o %PORT% para windows) 
 ```
