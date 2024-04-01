@@ -20,8 +20,8 @@ from dotenv import load_dotenv
 import os
 
 load_dotenv()
-connection_string = 'postgresql://stream.club2023:RWYJ4T6soPCi@ep-lively-shadow-54646847.us-west-2.aws.neon.tech/rdb?sslmode=require'
-PORT = os.getenv('PORT')
+
+connection_string = os.getenv('DATABASE_URL')
 
 engine = create_engine(connection_string)
 
