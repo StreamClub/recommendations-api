@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends
 from security import verify_token
 from sqlalchemy.orm import Session
 from fastapi import Depends
-from db import MMR, SSR, UMR, USR, get_db
+from db import MMR, SSR, UMR, USR, GMR, get_db
 import json
 
 router = APIRouter(prefix="/recommendations", dependencies=[Depends(verify_token)])
@@ -35,3 +35,7 @@ async def get_movie_recommendation(id:int, db: Session = Depends(get_db)):
 @router.get('/user/series/{id}', status_code=200)
 async def get_movie_recommendation(id:int, db: Session = Depends(get_db)):
     return get_recommendations(id, db, USR)
+
+@router.get('/groups/{id}/movie', status_code=200)
+async def get_group_movie_recommendation(id:int, db: Session = Depends(get_db)):
+    return get_recommendations(id, db, GMR)
