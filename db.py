@@ -54,3 +54,12 @@ class USR(Base):
 
   def __str__(self):
     return f"Series recommendations for user with id {self.id}: {self.recommendations}"
+  
+class GMR(Base):
+  __tablename__ = "group_movie_recommendation"
+
+  id = Column(Integer,primary_key=True,nullable=False)
+  recommendations = Column(String,nullable=False)
+
+  def __str__(self):
+    return f"Movie recommendations for group with id {self.id}: {self.recommendations}"
