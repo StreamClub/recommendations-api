@@ -36,3 +36,21 @@ class SSR(Base):
 
   def __str__(self):
     return f"Recommendations for series with id {self.id}: {self.recommendations}"
+  
+class UMR(Base):
+  __tablename__ = "user_movie_recommendation"
+
+  id = Column(Integer,primary_key=True,nullable=False)
+  recommendations = Column(String,nullable=False)
+
+  def __str__(self):
+    return f"Movie recommendations for user with id {self.id}: {self.recommendations}"
+
+class USR(Base):
+  __tablename__ = "user_series_recommendation"
+
+  id = Column(Integer,primary_key=True,nullable=False)
+  recommendations = Column(String,nullable=False)
+
+  def __str__(self):
+    return f"Series recommendations for user with id {self.id}: {self.recommendations}"
