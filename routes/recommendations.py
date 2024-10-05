@@ -22,11 +22,13 @@ def get_recommendations(id: int, db: Session, Table: object):
 
 @router.get('/movie/{id}', status_code=200)
 async def get_movie_recommendation(id:int, db: Session = Depends(get_db)):
-    return get_recommendations(id, db, MMR)
+    movie_recos = get_recommendations(id, db, MMR)
+    return movie_recos[:5]
 
 @router.get('/series/{id}', status_code=200)
 async def get_movie_recommendation(id:int, db: Session = Depends(get_db)):
-    return get_recommendations(id, db, SSR)
+    series_recos = get_recommendations(id, db, SSR)
+    return series_recos[:5]
 
 @router.get('/user/movie/{id}', status_code=200)
 async def get_movie_recommendation(id:int, db: Session = Depends(get_db)):
